@@ -1,0 +1,16 @@
+{
+    "name": "Project Architect",
+    "short_name": "ProArch",
+    "description": "AI-powered project structure generator",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#101322",
+    "theme_color": "#2b4bee",
+    "icons": [
+        {
+            "src": "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

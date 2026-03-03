@@ -1,0 +1,68 @@
+/* Glassmorphism and Custom Styles */
+:root {
+    --primary: #2b4bee;
+    --background-light: #f6f6f8;
+    --background-dark: #101322;
+}
+
+body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass {
+    background: rgba(16, 19, 34, 0.7);
+    border: 1px solid rgba(43, 75, 238, 0.2);
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.folder-tree-item:hover {
+    background: rgba(43, 75, 238, 0.1);
+}
+
+/* Transitions for SPA */
+.view-transition {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
