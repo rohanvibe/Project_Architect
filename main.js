@@ -244,8 +244,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch('/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ idea }) // Note: We do NOT send the apiKey to the server
+                    body: JSON.stringify({ idea })
                 });
+
+                if (response.status === 404) {
+                    throw new Error('Free Tier is unavailable on this static host. Please provide your own API Key in Settings.');
+                }
+
+                const contentType = response.headers.get("content-type");
+                if (!contentType || !contentType.includes("application/json")) {
+                    throw new Error('Server returned a non-JSON response. Ensure the backend is running.');
+                }
+
                 data = await response.json();
                 if (!response.ok) throw new Error(data.error || 'Server error');
             }
