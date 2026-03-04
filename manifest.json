@@ -1,7 +1,7 @@
 {
-    "name": "Project Architect",
-    "short_name": "ProArch",
-    "description": "AI-powered project scaffolding and architecture generator.",
+    "name": "BlueprintAI",
+    "short_name": "Blueprint",
+    "description": "Premium AI-powered project scaffolding and architecture generator.",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#101322",

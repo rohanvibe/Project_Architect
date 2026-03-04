@@ -1,4 +1,4 @@
-const CACHE_NAME = 'project-architect-v1';
+const CACHE_NAME = 'blueprint-ai-v1';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',

@@ -46,7 +46,7 @@ app.post("/generate", limiter, async (req, res) => {
             baseURL: "https://api.sambanova.ai/v1",
         });
 
-        const prompt = `Act as a Project Architect. Create a logical and detailed project structure for the following idea: "${idea}".
+        const prompt = `Act as BlueprintAI. Create a logical and detailed project structure for the following idea: "${idea}".
         
         CRITICAL INSTRUCTIONS:
         1. Match the NATURE of the project. If it is a school project, use appropriate folders (e.g., research, diagrams, assets) and file types (e.g., .txt, .md, .pdf-placeholder).

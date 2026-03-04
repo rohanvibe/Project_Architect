@@ -1,6 +1,6 @@
-# �️ Project Architect
+# 🟦 BlueprintAI
 
-**Project Architect** is a premium, AI-powered scaffolding tool that transforms simple project ideas into complete, professional folder structures and starter files. 
+**BlueprintAI** is a premium, AI-powered scaffolding tool that transforms simple project ideas into complete, professional folder structures and starter files. 
 
 ![Project Icon](./icons/icon-192.png)
 
@@ -21,7 +21,7 @@
 - **AI Integration**: SambaNova Cloud (OpenAI-compatible SDK).
 - **Libraries**: JSZip (ZIP generation), Dotenv (Config).
 
-## � Getting Started
+## 📥 Getting Started
 
 ### 1. Prerequisites
 - Node.js installed.
@@ -29,8 +29,8 @@
 
 ### 2. Installation
 ```bash
-git clone https://github.com/your-username/Project_Architect.git
-cd Project_Architect
+git clone https://github.com/your-username/BlueprintAI.git
+cd BlueprintAI
 npm install
 ```
 
@@ -59,4 +59,4 @@ This app is a Progressive Web App. To install:
 2. Click the **Install** icon in the address bar or select **"Add to Home Screen"** on mobile.
 
 ---
-Built with � by a Project Architect.
+Built with 💙 by the BlueprintAI Team.

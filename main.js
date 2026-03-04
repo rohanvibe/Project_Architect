@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function generateDirectly(idea, apiKey) {
-        const prompt = `Act as a Project Architect. Create a logical and detailed project structure for the following idea: "${idea}".
+        const prompt = `Act as BlueprintAI. Create a logical and detailed project structure for the following idea: "${idea}".
         
         CRITICAL INSTRUCTIONS:
         1. Match the NATURE of the project. If it is a school project, use appropriate folders (e.g., research, diagrams, assets) and file types (e.g., .txt, .md, .pdf-placeholder).
@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
         readyView.classList.remove('hidden');
         bottomNav.classList.remove('hidden');
 
-        resultProjectName.textContent = data.projectName || 'Project Architecture';
+        resultProjectName.textContent = data.projectName || 'BlueprintAI Architecture';
 
         // Render Summary
         aiSummaryList.innerHTML = '';
