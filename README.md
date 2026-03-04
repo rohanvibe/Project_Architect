@@ -1,54 +1,62 @@
-# 🏗️ Project Architect
+# �️ Project Architect
 
-Project Architect is a powerful, AI-driven scaffolding tool that transforms your project ideas into production-ready directory structures and starter code instantly. Built with Node.js, Express, and Google Gemini.
+**Project Architect** is a premium, AI-powered scaffolding tool that transforms simple project ideas into complete, professional folder structures and starter files. 
 
-## 🚀 Features
+![Project Icon](./icons/icon-192.png)
 
-- **AI-Powered Scaffolding**: Uses Google Gemini to generate professional folder structures based on natural language descriptions.
-- **Stunning UI/UX**: High-fidelity dark mode design with glassmorphism, responsive layouts, and smooth animations.
-- **Interactive File Explorer**: Visually browse the generated project with file previews and collapsible folders.
-- **Instant ZIP Download**: Download your entire project structure in one click.
-- **BYOK (Bring Your Own Key)**: Support for user-provided Gemini API keys stored locally.
-- **PWA Ready**: Mobile-friendly, installable, and fast.
+## 🚀 Key Features
 
-## 🛠️ Tech Stack
+- **AI-Driven Scaffolding**: Powered by **SambaNova AI (Llama 3.3)** for lightning-fast, intelligent structure generation.
+- **Context-Aware Design**: Automatically identifies the nature of your project (School vs. Software) and adjusts file types (e.g., `.txt` for reports, `.js` for code).
+- **Zero-Knowledge Security**: User API keys are never stored on the server. Requests for BYOK users are made directly from the browser to SambaNova.
+- **Persistent History**: Keeps your last 20 generations saved locally in your browser.
+- **Full PWA Support**: Install it on your Desktop or Mobile for a native-app experience, complete with offline support via Service Workers.
+- **Interactive Previews**: Preview generated file content in a sleek, glassmorphism modal before downloading.
+- **One-Click Export**: Download your entire architecture as a structured `.zip` file instantly.
 
-- **Frontend**: Vanilla JavaScript (ES6+), Tailwind CSS (CDN), Material Symbols, JSZip.
-- **Backend**: Node.js, Express, @google/generative-ai, express-rate-limit.
+## 🛠️ Technology Stack
 
-## 📦 Local Setup
+- **Frontend**: Vanilla JS, Tailwind CSS, Google Material Symbols.
+- **Backend**: Node.js, Express.
+- **AI Integration**: SambaNova Cloud (OpenAI-compatible SDK).
+- **Libraries**: JSZip (ZIP generation), Dotenv (Config).
+
+## � Getting Started
 
 ### 1. Prerequisites
-- Node.js (v18 or higher)
-- A Gemini API Key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+- Node.js installed.
+- A **SambaNova API Key** (Get one at [SambaNova Cloud](https://cloud.sambanova.ai/)).
 
 ### 2. Installation
-Clone the repository and install dependencies:
 ```bash
+git clone https://github.com/your-username/Project_Architect.git
+cd Project_Architect
 npm install
 ```
 
-### 3. Environment Configuration
+### 3. Configuration
 Create a `.env` file in the root directory:
 ```env
-GEMINI_API_KEY=your_server_side_key_here
+SAMBANOVA_API_KEY=your_secret_key_here
 PORT=3000
 ```
 
 ### 4. Running the App
-Start the backend server:
 ```bash
-npm start
+npm run dev
 ```
-The app will be available at `http://localhost:3000`.
+Visit `http://localhost:3000` in your browser.
 
-## 🌐 Deployment
+## 🛡️ Security & Privacy
 
-### Deploying to Vercel
-1. Push your code to a GitHub repository.
-2. Connect the repository to Vercel.
-3. Add your `GEMINI_API_KEY` to the Vercel environment variables.
-4. Deploy!
+- **Server-Side API**: Your `.env` key is used only for the initial 5 free "Universal Tier" prompts.
+- **Client-Side BYOK**: When a user provides their own key in Settings, the app bypasses the server and connects directly to `api.sambanova.ai`.
+- **Local Storage**: Generation history and user keys are stored entirely in your local browser storage.
 
-## 📄 License
-MIT License.
+## 📱 PWA Installation
+This app is a Progressive Web App. To install:
+1. Open the app in Chrome/Edge/Safari.
+2. Click the **Install** icon in the address bar or select **"Add to Home Screen"** on mobile.
+
+---
+Built with � by a Project Architect.
