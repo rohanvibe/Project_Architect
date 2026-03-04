@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // --- FREE TIER: SERVER-SIDE RELAY ---
                 console.log('--- Server-Relayed Request (Free Tier) ---');
-                const response = await fetch('/generate', {
+                const response = await fetch('/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ idea })

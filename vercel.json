@@ -1,39 +1,8 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "api/generate.js",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "index.html",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "*.js",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "*.css",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "manifest.json",
-            "use": "@vercel/static"
-        },
-        {
-            "src": "icons/**",
-            "use": "@vercel/static"
-        }
-    ],
     "rewrites": [
         {
             "source": "/generate",
             "destination": "/api/generate"
-        },
-        {
-            "source": "/(.*)",
-            "destination": "/$1"
         }
     ]
 }
