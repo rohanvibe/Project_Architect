@@ -38,8 +38,6 @@ module.exports = async (req, res) => {
         1. Match the NATURE of the project. If it is a school project, use appropriate folders (e.g., research, diagrams, assets) and file types (e.g., .txt, .md, .pdf-placeholder).
         2. DO NOT assume this is a software development project unless the user mentions coding, apps, or specific programming languages.
         3. Provide high-quality, realistic starter content for every file created.
-        4. Generate a 'diagram' using ONLY pure Mermaid.js Flowchart nodes (e.g., A[Start] --> B[Step]).
-        5. CRITICAL: In the Mermaid diagram, DO NOT use (), "", [], or {} inside the node labels. Keep labels as simple text.
         
         Return ONLY a raw JSON object with NO markdown, NO backticks.
         {
@@ -49,8 +47,7 @@ module.exports = async (req, res) => {
           "resources": [ { "label": "Resource Name", "url": "https://..." } ],
           "presentationTips": ["Tip 1", "Tip 2"],
           "initialInsight": "Brief expert commentary.",
-          "scorecard": { "feasibility": 1-100, "complexity": 1-100, "rating": "A-TIER/B-TIER/S-TIER" },
-          "diagram": "A[Start] --> B[Process]"
+          "scorecard": { "feasibility": 1-100, "complexity": 1-100, "rating": "A-TIER/B-TIER/S-TIER" }
         }`;
 
         const response = await client.chat.completions.create({

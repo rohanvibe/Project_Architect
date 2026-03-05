@@ -125,16 +125,6 @@ body {
     box-shadow: 0 4px 12px rgba(43, 75, 238, 0.3);
 }
 
-.mermaid svg {
-    max-width: 100% !important;
-    height: auto !important;
-}
-
-#mermaid-container {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
 /* Blueprint Aesthetic */
 .blueprint-mode {
     background-color: #1a3a6c !important;
@@ -175,10 +165,6 @@ body {
 
 .btn-sandbox:hover {
     background: #0076e4;
-}
-
-#mermaid-container.ready {
-    opacity: 1;
 }
 
 #blueprint-sketch-overlay {

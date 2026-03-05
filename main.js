@@ -68,14 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendChat = document.getElementById('send-chat');
 
     // Advanced Feature Elements
-    const tabDiagram = document.getElementById('tab-diagram');
-    const viewDiagram = document.getElementById('view-diagram');
     const techChips = document.querySelectorAll('.tech-chip');
     const voiceBtn = document.getElementById('voice-btn');
     const scoreFeasibility = document.getElementById('score-feasibility');
     const scoreComplexity = document.getElementById('score-complexity');
     const projectRating = document.getElementById('project-rating');
-    const mermaidContainer = document.getElementById('mermaid-container');
 
     const openSandboxBtn = document.getElementById('open-sandbox-btn');
     const pushGithubBtn = document.getElementById('push-github-btn');
@@ -209,8 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Tab Switching Logic ---
-    const tabs = [tabStructure, tabDiagram, tabRoadmap, tabPresentation];
-    const views = [viewStructure, viewDiagram, viewRoadmap, viewPresentation];
+    const tabs = [tabStructure, tabRoadmap, tabPresentation];
+    const views = [viewStructure, viewRoadmap, viewPresentation];
 
     function switchTab(activeTab, activeView) {
         tabs.forEach(t => {
@@ -227,10 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
     tabStructure.onclick = () => switchTab(tabStructure, viewStructure);
     tabRoadmap.onclick = () => switchTab(tabRoadmap, viewRoadmap);
     tabPresentation.onclick = () => switchTab(tabPresentation, viewPresentation);
-    tabDiagram.onclick = () => {
-        switchTab(tabDiagram, viewDiagram);
-        renderMermaid();
-    };
 
     // --- Tech Selection ---
     techChips.forEach(chip => {
@@ -263,41 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
         recognition.onend = () => voiceBtn.classList.remove('text-primary', 'animate-pulse');
     } else {
         voiceBtn.style.display = 'none';
-    }
-
-    // --- Mermaid Rendering ---
-    async function renderMermaid() {
-        if (!currentProjectData?.diagram) {
-            mermaidContainer.innerHTML = '<div class="text-slate-400 italic p-8 text-center text-sm">No diagram generated for this specific project idea.</div>';
-            return;
-        }
-
-        const diag = 'graph TD\n' + currentProjectData.diagram.trim().replace(/^(```mermaid|```|graph TD|flowchart TD|graph|flowchart)/gi, "").replace(/```$/g, "").trim()
-            .replace(/\((.*?)\)/g, ' $1 ')
-            .replace(/["']/g, '')
-            .replace(/[()]/g, ' ');
-
-        console.log("Rendering Diagram Code:", diag);
-        mermaidContainer.innerHTML = '<div class="text-primary animate-pulse py-10 font-mono text-xs uppercase tracking-widest">Generating Graphics...</div>';
-
-        try {
-            // Using mermaid.render is the most robust way in v11
-            // It bypasses the "auto-render" logic and just gives us the SVG
-            const id = 'mermaid-svg-' + Math.random().toString(36).substr(2, 9);
-            const { svg } = await mermaid.render(id, diag);
-
-            mermaidContainer.innerHTML = svg;
-            mermaidContainer.classList.add('ready');
-        } catch (renderErr) {
-            console.error('Mermaid Render Error:', renderErr);
-            // Fallback UI if rendering fails
-            mermaidContainer.innerHTML = `
-                <div class="bg-red-500/5 border border-red-500/20 p-6 rounded-2xl text-xs font-mono text-red-400 w-full">
-                    <p class="font-bold mb-4 uppercase tracking-widest text-red-500">Diagram Logic Error</p>
-                    <div class="opacity-70">${diag.split('\n').join('<br>')}</div>
-                </div>`;
-            mermaidContainer.classList.add('ready');
-        }
     }
 
     // --- Project Assistant Logic ---
@@ -356,7 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
         1. Match the NATURE of the project. If it is a school project, use appropriate folders (e.g., research, diagrams, assets) and file types (e.g., .txt, .md, .pdf-placeholder).
         2. DO NOT assume this is a software development project unless the user mentions coding, apps, or specific programming languages.
         3. Provide high-quality, realistic starter content for every file created.
-        4. Generate a 'diagram' using Mermaid.js Gantt or Flowchart syntax.
         
         Return ONLY a raw JSON object with NO markdown, NO backticks.
         {
@@ -366,8 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "resources": [ { "label": "Resource Name", "url": "https://..." } ],
           "presentationTips": ["Tip 1", "Tip 2"],
           "initialInsight": "Brief expert commentary.",
-          "scorecard": { "feasibility": 1-100, "complexity": 1-100, "rating": "A-TIER/B-TIER/S-TIER" },
-          "diagram": "mermaid syntax string starting with graph TD"
+          "scorecard": { "feasibility": 1-100, "complexity": 1-100, "rating": "A-TIER/B-TIER/S-TIER" }
         }`;
 
         const response = await fetch("https://api.sambanova.ai/v1/chat/completions", {
