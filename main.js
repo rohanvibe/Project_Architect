@@ -209,8 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Tab Switching Logic ---
-    const tabs = [tabStructure, tabRoadmap, tabPresentation];
-    const views = [viewStructure, viewRoadmap, viewPresentation];
+    const tabs = [tabStructure, tabRoadmap, tabPresentation, tabDiagram];
+    const views = [viewStructure, viewRoadmap, viewPresentation, viewDiagram];
 
     function switchTab(activeTab, activeView) {
         tabs.forEach(t => {
@@ -271,9 +271,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderMermaid() {
         if (!currentProjectData?.diagram) return;
 
-        // Clean the diagram string
+        // Clean the diagram string aggressively
         let diag = currentProjectData.diagram.trim();
-        diag = diag.replace(/^(```mermaid|```)/, "").replace(/```$/, "").trim();
+        diag = diag.replace(/^(```mermaid|```)/g, "").replace(/```$/g, "").trim();
+
+        // Remove potentially breaking characters inside labels like [Label (Text)] or [Label "Text"]
+        // Mermaid 11 is sensitive to (), "", [], etc inside labels if not escaped perfectly.
+        // We'll replace them with spaces/dashes to be safe.
+        diag = diag.replace(/\((.*?)\)/g, ' $1 ') // replace (text) with text
+            .replace(/["']/g, '');        // remove quotes
 
         mermaidContainer.innerHTML = diag;
         mermaidContainer.removeAttribute('data-processed');

@@ -39,7 +39,8 @@ module.exports = async (req, res) => {
         2. DO NOT assume this is a software development project unless the user mentions coding, apps, or specific programming languages.
         3. Provide high-quality, realistic starter content for every file created.
         4. Generate a 'diagram' using Mermaid.js Flowchart syntax (graph TD).
-        5. CRITICAL: In the Mermaid diagram, DO NOT use parentheses, quotes, or special characters in node labels. Use clean names like "MainUI" or "DatabaseProcess".
+        5. CRITICAL: In the Mermaid diagram, use ONLY alphanumeric characters and spaces in node labels. NO brackets [], NO parentheses (), NO quotes "", NO braces {} inside labels. 
+           Format example: A[User Login] --> B[Dashboard]
         
         Return ONLY a raw JSON object with NO markdown, NO backticks.
         {
