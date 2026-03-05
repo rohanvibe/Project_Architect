@@ -275,18 +275,25 @@ document.addEventListener('DOMContentLoaded', () => {
         let diag = currentProjectData.diagram.trim();
         diag = diag.replace(/^(```mermaid|```)/g, "").replace(/```$/g, "").trim();
 
-        // Remove potentially breaking characters inside labels like [Label (Text)] or [Label "Text"]
+        // Remove potentially breaking characters in labels like [Label (Text)] or [Label "Text"]
         // Mermaid 11 is sensitive to (), "", [], etc inside labels if not escaped perfectly.
         // We'll replace them with spaces/dashes to be safe.
-        diag = diag.replace(/\((.*?)\)/g, ' $1 ') // replace (text) with text
-            .replace(/["']/g, '');        // remove quotes
+        diag = diag.replace(/\((.*?)\)/g, ' $1 ')
+            .replace(/["']/g, '');
+
+        // Final fallback if the AI didn't provide a graph start
+        if (!diag.startsWith('graph') && !diag.startsWith('flowchart')) {
+            diag = 'graph TD\n' + diag;
+        }
 
         mermaidContainer.innerHTML = diag;
         mermaidContainer.removeAttribute('data-processed');
 
         try {
-            setTimeout(() => {
-                mermaid.init(undefined, mermaidContainer);
+            setTimeout(async () => {
+                await mermaid.run({
+                    querySelector: '#mermaid-container'
+                });
                 mermaidContainer.classList.add('ready');
             }, 50);
         } catch (e) {
