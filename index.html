@@ -162,13 +162,29 @@
         </section>
 
         <!-- SECTION: LOADING -->
-        <section id="loading-view" class="hidden flex flex-col items-center gap-6 text-center animate-pulse">
-            <div class="size-20 bg-primary/20 rounded-full flex items-center justify-center">
-                <span class="material-symbols-outlined text-4xl text-primary animate-spin">sync</span>
+        <section id="loading-view" class="hidden flex flex-col items-center gap-6 text-center">
+            <!-- Sketching Overlay -->
+            <div id="blueprint-sketch-overlay" class="fixed inset-0 z-0 overflow-hidden opacity-0 pointer-events-none">
+                <svg width="100%" height="100%" class="absolute inset-0">
+                    <g fill="none" stroke="white" stroke-width="0.5" opacity="0.4" class="sketch-line">
+                        <path d="M 50 100 L 950 100 M 50 200 L 950 200 M 50 300 L 950 300"></path>
+                        <path d="M 100 50 L 100 950 M 200 50 L 200 950 M 300 50 L 300 950"></path>
+                        <rect x="150" y="150" width="700" height="600" rx="20"></rect>
+                        <circle cx="500" cy="450" r="100"></circle>
+                    </g>
+                </svg>
             </div>
-            <div>
-                <h2 class="text-2xl font-bold">Architecting Project...</h2>
-                <p class="text-slate-500">Developing folder structures and starter files.</p>
+
+            <div class="relative z-10 flex flex-col items-center gap-6">
+                <div
+                    class="size-24 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-md border border-white/20">
+                    <span class="material-symbols-outlined text-5xl text-white animate-spin">architecture</span>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-3xl font-black text-white italic tracking-tighter uppercase">Drafting Blueprint...
+                    </h2>
+                    <p class="text-blue-100/70 font-mono text-sm">Calculating structural integrity & dependencies</p>
+                </div>
             </div>
         </section>
 
@@ -229,6 +245,18 @@
                                 <span class="material-symbols-outlined">download</span>
                                 Download Project ZIP
                             </button>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button id="open-sandbox-btn"
+                                    class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl btn-sandbox transition-all font-bold text-xs">
+                                    <span class="material-symbols-outlined text-sm">rocket_launch</span>
+                                    Sandbox
+                                </button>
+                                <button id="push-github-btn"
+                                    class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl btn-github transition-all font-bold text-xs">
+                                    <span class="material-symbols-outlined text-sm">terminal</span>
+                                    Push GitHub
+                                </button>
+                            </div>
                             <button id="restart-btn"
                                 class="text-slate-500 text-sm font-medium hover:text-slate-300 transition-colors flex items-center justify-center gap-2">
                                 <span class="material-symbols-outlined text-sm">refresh</span>
@@ -423,16 +451,23 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">API
-                                Configuration</label>
-                            <div class="relative">
-                                <span
-                                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">key</span>
-                                <input id="settings-api-key" type="password"
-                                    class="w-full h-12 pl-12 pr-4 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm font-mono"
-                                    placeholder="Paste SambaNova Key here..." />
+                                Keys (Stored Locally)</label>
+                            <div class="space-y-3">
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">key</span>
+                                    <input id="settings-api-key" type="password"
+                                        class="w-full h-12 pl-12 pr-4 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm font-mono"
+                                        placeholder="SambaNova API Key" />
+                                </div>
+                                <div class="relative">
+                                    <span
+                                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">terminal</span>
+                                    <input id="settings-github-token" type="password"
+                                        class="w-full h-12 pl-12 pr-4 bg-white/5 border border-white/10 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-sm font-mono"
+                                        placeholder="GitHub Classic Token (repo scope)" />
+                                </div>
                             </div>
-                            <p class="text-[10px] text-slate-500 mt-2 px-1 italic">Your key is stored locally in your
-                                browser.</p>
                         </div>
                     </div>
 

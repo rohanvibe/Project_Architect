@@ -135,6 +135,58 @@ body {
     transition: opacity 0.5s ease;
 }
 
+/* Blueprint Aesthetic */
+.blueprint-mode {
+    background-color: #1a3a6c !important;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px) !important;
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px !important;
+    background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px !important;
+}
+
+.sketch-line {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: sketchDraw 3s ease-in-out forwards;
+}
+
+@keyframes sketchDraw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.btn-github {
+    background: #24292e;
+    color: white;
+}
+
+.btn-github:hover {
+    background: #2f363d;
+}
+
+.btn-sandbox {
+    background: #1389fd;
+    color: white;
+}
+
+.btn-sandbox:hover {
+    background: #0076e4;
+}
+
 #mermaid-container.ready {
+    opacity: 1;
+}
+
+#blueprint-sketch-overlay {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.blueprint-mode #blueprint-sketch-overlay {
     opacity: 1;
 }

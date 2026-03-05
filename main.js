@@ -77,8 +77,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectRating = document.getElementById('project-rating');
     const mermaidContainer = document.getElementById('mermaid-container');
 
+    const openSandboxBtn = document.getElementById('open-sandbox-btn');
+    const pushGithubBtn = document.getElementById('push-github-btn');
+    const settingsGithubToken = document.getElementById('settings-github-token');
+
     let currentProjectData = null;
     let selectedTech = 'Web (Vanilla JS)';
+
+    // Seed GitHub Token from Storage
+    settingsGithubToken.value = localStorage.getItem('githubToken') || '';
+    settingsGithubToken.addEventListener('input', () => {
+        localStorage.setItem('githubToken', settingsGithubToken.value.trim());
+    });
 
     // --- State Management ---
     const PROMPT_LIMIT = 5;
@@ -388,6 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
         inputView.classList.add('hidden');
         simpleFooter.classList.add('hidden');
         loadingView.classList.remove('hidden');
+        document.body.classList.add('blueprint-mode');
 
         try {
             let data;
@@ -426,6 +437,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Generation Error:', error);
             alert(`Error: ${error.message}`);
             resetView();
+        } finally {
+            document.body.classList.remove('blueprint-mode');
         }
     });
 
@@ -661,5 +674,95 @@ document.addEventListener('DOMContentLoaded', () => {
         inputView.classList.remove('hidden');
         simpleFooter.classList.remove('hidden');
         scrollTo(0, 0);
+    });
+
+    // --- Live Sandbox (StackBlitz) ---
+    openSandboxBtn.addEventListener('click', () => {
+        if (!currentProjectData) return;
+        const files = {};
+        (currentProjectData.folders || []).forEach(f => {
+            (f.files || []).forEach(file => {
+                files[`${f.name}/${file.name}`] = file.content;
+            });
+        });
+
+        // Add a primary index.html if missing in root-like way
+        const firstHtml = Object.keys(files).find(k => k.endsWith('index.html'));
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.target = '_blank';
+        form.action = 'https://stackblitz.com/run';
+
+        const fields = {
+            'project[title]': currentProjectData.projectName || 'BlueprintAI Project',
+            'project[description]': `Architected via BlueprintAI: ${projectIdea.value}`,
+            'project[template]': selectedTech.includes('React') ? 'node' : 'javascript',
+            'project[files]': JSON.stringify(files)
+        };
+
+        for (const key in fields) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = fields[key];
+            form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    });
+
+    // --- GitHub Direct Push ---
+    pushGithubBtn.addEventListener('click', async () => {
+        const token = settingsGithubToken.value.trim();
+        if (!token) {
+            alert('Please add a GitHub Classic Token in Settings first!');
+            toggleModal(settingsModal, true);
+            return;
+        }
+
+        const originalText = pushGithubBtn.innerHTML;
+        pushGithubBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Creating...';
+        pushGithubBtn.disabled = true;
+
+        try {
+            const repoName = (currentProjectData.projectName || 'blueprint-project').replace(/[^a-z0-9]/gi, '-').toLowerCase();
+
+            // 1. Create Repo
+            const createRes = await fetch('https://api.github.com/user/repos', {
+                method: 'POST',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: repoName, auto_init: true })
+            });
+            const repoData = await createRes.json();
+            if (!createRes.ok) throw new Error(repoData.message || 'Repo creation failed');
+
+            const owner = repoData.owner.login;
+
+            // 2. Commit Files (Simplified multi-file commit via GitHub API is complex, so we do it file by file for this MVP)
+            for (const folder of currentProjectData.folders) {
+                for (const file of folder.files) {
+                    const path = `${folder.name}/${file.name}`;
+                    await fetch(`https://api.github.com/repos/${owner}/${repoName}/contents/${path}`, {
+                        method: 'PUT',
+                        headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            message: `Initial commit: ${file.name}`,
+                            content: btoa(unescape(encodeURIComponent(file.content)))
+                        })
+                    });
+                }
+            }
+
+            alert(`Successfully pushed to GitHub: github.com/${owner}/${repoName}`);
+            window.open(repoData.html_url, '_blank');
+        } catch (e) {
+            alert(`GitHub Error: ${e.message}`);
+        } finally {
+            pushGithubBtn.innerHTML = originalText;
+            pushGithubBtn.disabled = false;
+        }
     });
 });
