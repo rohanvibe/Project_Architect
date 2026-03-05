@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Mermaid Rendering ---
-    function renderMermaid() {
+    async function renderMermaid() {
         if (!currentProjectData?.diagram) {
             mermaidContainer.innerHTML = '<div class="text-slate-400 italic p-8 text-center text-sm">No diagram generated for this specific project idea.</div>';
             return;
@@ -274,41 +274,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Clean the diagram string aggressively
         let diag = currentProjectData.diagram.trim();
-        diag = diag.replace(/^(```mermaid|```|graph TD|flowchart TD)/gi, "").replace(/```$/g, "").trim();
+
+        // Strip out common markdown and wrapper noise
+        diag = diag.replace(/^(```mermaid|```|graph TD|flowchart TD|graph|flowchart)/gi, "").replace(/```$/g, "").trim();
+
+        // Final fallback to ensure it starts with graph TD
+        diag = 'graph TD\n' + diag;
 
         // Remove special characters that crash Mermaid 11 labels
         diag = diag.replace(/\((.*?)\)/g, ' $1 ')
             .replace(/["']/g, '')
-            .replace(/[()]/g, ' '); // Catch any remaining stray parens
+            .replace(/[()]/g, ' ');
 
-        // Always force a clean start
-        diag = 'graph TD\n' + diag;
-
-        // Insert clean code and reset processor
-        mermaidContainer.innerHTML = diag;
-        mermaidContainer.removeAttribute('data-processed');
-        mermaidContainer.classList.remove('ready');
+        console.log("Drafting Diagram:", diag);
 
         try {
-            setTimeout(async () => {
-                try {
-                    await mermaid.run({
-                        querySelector: '#mermaid-container'
-                    });
-                    mermaidContainer.classList.add('ready');
-                } catch (renderErr) {
-                    console.error('Mermaid Render Error:', renderErr);
-                    // Fallback UI
-                    mermaidContainer.innerHTML = `
-                        <div class="bg-red-500/5 border border-red-500/20 p-6 rounded-2xl text-xs font-mono text-red-400">
-                            <p class="font-bold mb-4 uppercase tracking-widest text-red-500">Diagram Logic Error</p>
-                            <div class="opacity-70">${diag.split('\n').join('<br>')}</div>
-                        </div>`;
-                    mermaidContainer.classList.add('ready');
-                }
-            }, 50);
-        } catch (e) {
-            console.error('Mermaid Execution Error:', e);
+            // Using mermaid.render is the most robust way in v11
+            // It bypasses the "auto-render" logic and just gives us the SVG
+            const id = 'mermaid-svg-' + Math.random().toString(36).substr(2, 9);
+            const { svg } = await mermaid.render(id, diag);
+
+            mermaidContainer.innerHTML = svg;
+            mermaidContainer.classList.add('ready');
+        } catch (renderErr) {
+            console.error('Mermaid Render Error:', renderErr);
+            // Fallback UI if rendering fails
+            mermaidContainer.innerHTML = `
+                <div class="bg-red-500/5 border border-red-500/20 p-6 rounded-2xl text-xs font-mono text-red-400 w-full">
+                    <p class="font-bold mb-4 uppercase tracking-widest text-red-500">Diagram Logic Error</p>
+                    <div class="opacity-70">${diag.split('\n').join('<br>')}</div>
+                </div>`;
+            mermaidContainer.classList.add('ready');
         }
     }
 
